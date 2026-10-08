@@ -10,6 +10,10 @@
 *.so
 build/
 bin/
+sm_demo
+gm_demo
+envelope_ossl
+envelope_gmssl
 
 # 编辑器与临时文件
 *.swp
