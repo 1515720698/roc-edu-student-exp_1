@@ -64,3 +64,22 @@ Verified OK
 ```
 
 说明：OpenSSL 3.0 原生支持 SM2 曲线；SM2 签名默认以 SM3 为摘要算法（签名者 ID 取默认值 1234567812345678）；验签输出 Verified OK。sm2_priv.pem 仅存实践目录，未入库。
+
+## 4. speed 性能测试
+
+```text
+$ openssl speed -seconds 1 -bytes 16384 -evp sm4-cbc
+The 'numbers' are in 1000s of bytes per second processed.
+type          16384 bytes
+SM4-CBC         112172.48k
+
+$ openssl speed -seconds 1 -evp sm3
+type             16 bytes     64 bytes    256 bytes   1024 bytes    8192 bytes   16384 bytes
+sm3              56400.90k   133060.42k   243829.50k   261999.62k   320790.53k   281313.28k
+```
+
+说明：SM4-CBC 大块吞吐约 110 MB/s；SM3 在 8KB 块上约 320 MB/s（WSL2 虚拟机单线程实测，仅作量级参考）。
+
+## 小结
+
+任务1 完成 OpenSSL 命令实践四项：对称加解密（SM4-CBC）、摘要与 HMAC（SM3）、非对称签名验签（SM2）、性能测试（speed），全部在 openEuler 24.03 上验证通过。
