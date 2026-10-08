@@ -3,8 +3,6 @@
 成员：20241328 蔡贸俊（Alice）、20241304 元泓鉴（Bob）
 环境：openEuler 24.03 LTS / OpenSSL 3.0.12 / GmSSL 3.3.0-dev
 
-> 元泓鉴的任务1/任务2 小节与其接收侧记录待其补充，见 MAILBOX。
-
 # 任务1 OpenSSL 命令实践（蔡贸俊）
 
 环境：openEuler 24.03 LTS (WSL2)、OpenSSL 3.0.12
@@ -91,6 +89,57 @@ sm3              56400.90k   133060.42k   243829.50k   261999.62k   320790.53k  
 
 任务1 完成 OpenSSL 命令实践四项：对称加解密（SM4-CBC）、摘要与 HMAC（SM3）、非对称签名验签（SM2）、性能测试（speed），全部在 openEuler 24.03 上验证通过。
 
+# 任务1：OpenSSL 命令实践记录
+
+## 实验人
+20241304 元泓鉴
+
+## 环境
+WSL openEuler 24.03，OpenSSL 3.0.12
+
+## 操作内容
+
+### SM3 摘要
+```
+openssl dgst -sm3 plain.txt
+```
+对明文文件计算 SM3 杂凑值，输出32字节摘要。
+
+### HMAC-SM3
+```
+openssl dgst -sm3 -hmac "mykey123" plain.txt
+```
+使用密钥计算带消息认证码的 SM3 值。
+
+### SM4-CBC 加解密
+```
+openssl rand -hex 16
+openssl enc -sm4-cbc -e -K <key> -iv <iv> -in plain.txt -out enc.bin
+openssl enc -sm4-cbc -d -K <key> -iv <iv> -in enc.bin
+```
+生成随机16字节密钥，使用 SM4-CBC 模式加解密，PKCS#7 填充。
+
+### SM2 密钥生成
+```
+openssl ecparam -genkey -name SM2 -out sm2_priv.pem
+openssl pkey -in sm2_priv.pem -pubout -out sm2_pub.pem
+```
+
+### SM2 加解密
+```
+openssl pkeyutl -encrypt -pubin -inkey sm2_pub.pem -in k.bin -out KC.bin
+openssl pkeyutl -decrypt -inkey sm2_priv.pem -in KC.bin -out k_recv.bin
+```
+
+### SM2 签名验签
+```
+openssl dgst -sm3 -sign sm2_priv.pem -out sign.bin plain.txt
+openssl dgst -sm3 -verify sm2_pub.pem -signature sign.bin plain.txt
+```
+
+## 结果
+全部操作成功，加解密往返一致，验签输出 Verified OK。
+
 # 任务2 GmSSL 命令实践（蔡贸俊）
 
 环境：openEuler 24.03 LTS (WSL2)、GmSSL 3.3.0-dev.1183（源码编译安装）
@@ -151,6 +200,48 @@ GMSSL-SM2-ENC-ROUNDTRIP-OK
 
 完成 GmSSL 命令实践：SM4-CBC 加解密、SM3 摘要/HMAC、SM2 密钥生成/签名验签/加密解密，并与 OpenSSL 的 SM3 摘要交叉验证一致。踩坑两条（sm4_cbc 需显式 -pkcs7_padding、sm3_hmac 密钥长度下限）已记入问题与反思素材。
 
+# 任务2：GmSSL 命令实践记录
+
+## 实验人
+20241304 元泓鉴
+
+## 环境
+WSL openEuler 24.03，GmSSL 3.3.0-dev.1183（源码编译安装至 ~/.local/gmssl）
+
+## 操作内容
+
+### SM3 摘要
+```
+gmssl sm3 plain.txt
+```
+计算结果与 OpenSSL sm3 一致，验证正确性。
+
+### SM4-CBC 加解密
+```
+gmssl sm4_cbc -encrypt -key <key> -iv <iv> -pkcs7_padding -in plain.txt -out C.bin
+gmssl sm4_cbc -decrypt -key <key> -iv <iv> -pkcs7_padding -in C.bin -out plain_recv.txt
+```
+
+### SM2 密钥生成
+```
+gmssl sm2keygen -pass 12345678 -out sm2_priv.pem -pubout sm2_pub.pem
+```
+
+### SM2 加解密
+```
+gmssl sm2encrypt -pubkey sm2_pub.pem -in k.bin -out KC.bin
+gmssl sm2decrypt -pass 12345678 -inkey sm2_priv.pem -in KC.bin -out k_recv.bin
+```
+
+### SM2 签名验签
+```
+gmssl sm2sign -key sm2_priv.pem -pass 12345678 -in C.bin -out S1.bin
+gmssl sm2verify -pubkey sm2_pub.pem -signature S1.bin -in C.bin
+```
+
+## 结果
+全部操作成功，GmSSL 与 OpenSSL 的 SM3 摘要值完全一致，交叉验证通过。
+
 # 任务3 OpenSSL 命令数字信封 Alice→Bob
 
 角色：Alice=20241328 蔡贸俊（发送），Bob=20241304 元泓鉴（接收）
@@ -186,6 +277,67 @@ S1.bin 71
 ## Bob 接收侧（元泓鉴填写）
 
 （待填：Sm2Very(PKa,S1) → Sm2Dec(SKb,KC)=k → Sm4Dec(k,C)=P，明文应为"蔡贸俊 20241328"）
+
+## Bob 接收侧（元泓鉴 20241304）
+
+### 环境
+- WSL openEuler 24.03，OpenSSL 3.0.12
+- Bob 私钥：openssl-cmd/sm2_priv.pem
+- Alice 公钥：keys/20241328_caimaojun/sm2_openssl_pub.pem
+
+### 接收三步
+
+**1. 验签**
+```
+openssl dgst -sm3 -verify sm2_openssl_pub.pem -signature S1.bin C.bin
+```
+结果：`Verified OK`
+
+**2. SM2 解密 KC**
+```
+openssl pkeyutl -decrypt -inkey sm2_priv.pem -in KC.bin -out k.bin
+```
+恢复的 SM4 密钥（hex）：`093f3fc30861d9daa78415b1ddb49c58`（16字节）
+
+**3. SM4-CBC 解密 C**
+```
+openssl enc -sm4-cbc -d -in C.bin -K 093f3fc30861d9daa78415b1ddb49c58 -iv 00000000000000000000000000000000
+```
+明文：`蔡贸俊 20241328`
+
+### 结论
+数字信封接收端完整跑通：验签通过、密钥恢复正确、SM4 解密得到预期明文。
+
+## Bob 接收侧（元泓鉴 20241304）
+
+### 命令版数字信封接收（exchange/task3/）
+
+1. 验签：
+```
+openssl dgst -sm3 -verify sm2_openssl_pub.pem -signature S1.bin C.bin
+```
+结果：Verified OK
+
+2. SM2 解密 KC：
+```
+openssl pkeyutl -decrypt -inkey sm2_priv.pem -in KC.bin -out k.bin
+```
+恢复密钥 hex：093f3fc30861d9daa78415b1ddb49c58
+
+3. SM4-CBC 解密 C：
+```
+openssl enc -sm4-cbc -d -in C.bin -K 093f3fc30861d9daa78415b1ddb49c58 -iv 00000000000000000000000000000000
+```
+明文：蔡贸俊 20241328
+
+### 库版数字信封接收（exchange/task3_lib/）
+
+1. 验签：Verified OK
+2. SM2 解密 KC 恢复密钥：83773f00767a2119a90ea6700e9239c4
+3. SM4 解密 C 明文：蔡贸俊 20241328
+
+### 结论
+命令版和库版数字信封接收均成功，验签通过、密钥恢复正确、解密得到预期明文。
 
 # 任务4 GmSSL 命令数字信封 Bob→Alice
 

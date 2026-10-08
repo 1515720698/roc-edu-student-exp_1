@@ -3,7 +3,12 @@
 命令：git log --date=iso --pretty=format:%h_%ad_%an_%s
 
 ```text
+cf0e578 2026-10-08 10:14:12 +0800 蔡贸俊 docs: 装配hours1-3/hours4-6/git_log提交稿并生成中文PDF（嵌入uming字体），附md2pdf工具
+f9e5f9d 2026-10-08 10:12:11 +0800 20241304-yuanhongjian docs: 补全task1/task2记录和task3-envelope Bob接收侧，留言通知
+e123636 2026-10-08 10:09:40 +0800 20241304-yuanhongjian feat: 上传task4命令版IV和task4_lib编程版GmSSL信封
+07bde16 2026-10-08 10:07:28 +0800 20241304-yuanhongjian merge: 解决MAILBOX冲突，保留双方留言
 5b62817 2026-10-08 10:04:39 +0800 蔡贸俊 docs: 问题与反思记录，留言催促Bob补信封文件与记录
+6c50644 2026-10-08 10:02:21 +0800 20241304-yuanhongjian feat(task3-bob): 真实接收OpenSSL数字信封，验签解密成功
 9a85423 2026-10-08 10:02:13 +0800 蔡贸俊 feat(hours46-4): GmSSL库编程数字信封接收侧程序完成，自测PASS
 2f266f5 2026-10-08 09:59:18 +0800 蔡贸俊 feat(hours46-3): OpenSSL库编程数字信封发送侧完成并发布exchange/task3_lib
 3b3cc65 2026-10-08 09:57:09 +0800 20241304-yuanhongjian Merge branch 'master' of gitee.com:xiaoyuanyuan999/roc-edu-student-exp_1

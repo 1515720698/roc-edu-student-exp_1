@@ -25,3 +25,17 @@ P = selftest 20241328
 等元泓鉴将库版信封（C.bin、KC.bin、S1.bin、iv.bin）发布到 exchange/task4_lib/ 后，运行：
 alice_recv_gm <我的GmSSL私钥> <口令> keys/20241304_yuanhongjian/sm2_gmssl_pub.pem exchange/task4_lib
 结果将追加到本文件。
+
+## 真实交换结果（Bob 库版信封 exchange/task4_lib/）
+
+```text
+$ ls exchange/task4_lib/
+C.bin  KC.bin  S1.bin
+$ ./code/envelope_gmssl/alice_recv_gm ~/work/task3/alice_gmssl_priv.pem ****** keys/20241304_yuanhongjian/sm2_gmssl_pub.pem exchange/task4_lib
+note: iv.bin absent, use zero IV
+Sm2Very(PKb, S1): PASS
+k len = 16
+P = 20241304 元泓鉴
+```
+
+结论：Bob 库版信封（本次 IV 为全 0）验签、解密钥、解明文全链路 PASS，明文为 Bob 学号姓名，4-6学时任务4 接收侧完成。双向库版数字信封（我发 task3_lib / 他发 task4_lib）均已互通成功。
