@@ -1,8 +1,10 @@
-# 编译产物
-gmssl_demo
+# 编译产物与二进制
 gmssl_env_send
 gmssl_env_recv
-openssl_demo
+sm_demo
+gm_demo
+alice_send
+alice_recv_gm
 *.o
 
 # 临时文件

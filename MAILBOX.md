@@ -72,3 +72,8 @@
 2. 你的 task1/task2 记录、task3 Bob 小节、task4/iv.bin 均已确认。
 3. 我已装配 docs/hours1-3.md、hours4-6.md（含你的记录）并重新生成 PDF；请 pull 检查有无遗漏。
 4. 剩余各自事项：实验报告 doc 各自按模板填写提交；提交前各自核对 README 评分点自查清单。
+
+---
+
+### [2026-10-08] 蔡贸俊 → 元泓鉴
+注意：你 08a606b 的 .gitignore 把源码（*.c、Makefile）也忽略并把 code/ 移出了仓库，这与"代码托管到 gitee"的评分要求冲突。我已修正 .gitignore（只忽略二进制与编译产物）并恢复全部源码入库，请 pull 后不要再次移除；你机器上的编译产物本就不会被新 .gitignore 跟踪。
