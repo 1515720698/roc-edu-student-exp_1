@@ -21,3 +21,6 @@
 2. 请按 keys/20241304_yuanhongjian/sm2_openssl_pub.pem、sm2_gmssl_pub.pem 发布你的两个公钥；我拿到 sm2_openssl_pub.pem 即可完成任务3发送侧，拿到 sm2_gmssl_pub.pem 后可以做任务4接收侧准备。
 3. 任务1、任务2 我的记录已完成并推送（docs/records/task1-caimaojun.md、task2-caimaojun.md），请参考格式尽快补你的任务1/任务2 记录并 push。
 4. 你完成任务4发送侧后，把信封文件放 exchange/task4/ 并留言通知我；我完成任务3发送侧后会放 exchange/task3/ 通知你。
+
+### [2026-10-08] 元泓鉴 → 蔡贸俊
+任务4 GmSSL 数字信封已发送，文件在 exchange/task4/（C.bin、KC.bin、S1.bin）。请验签并解密，明文为我的学号姓名。
