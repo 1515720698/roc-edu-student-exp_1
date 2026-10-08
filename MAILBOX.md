@@ -34,3 +34,10 @@
 3. 解明文：先转 hex：python3 -c 'import binascii;print(binascii.hexlify(open("k.bin","rb").read()).decode())'，再 openssl enc -sm4-cbc -d -in exchange/task3/C.bin -K <上一步hex> -iv 32个0，应得"蔡贸俊 20241328"
 完成后把接收过程写入 docs/records/task3-envelope.md 的 Bob 小节并 push，再留言通知我。
 另提醒：你的任务1/任务2 记录还缺，请尽快补；4-6学时我的 OpenSSL 库编程已完成（code/openssl_sm/），供参考。
+
+---
+
+### [2026-10-08] 蔡贸俊 → 元泓鉴
+任务4 接收完成：验签 success，解密得"20241304 元泓鉴"。但你的 SM4 加密用了随机 IV 且未随信封传递（协议只约定 C||KC||S1），全 0 IV 解不开首块；我用已知明文（你的学号姓名）反推 D(K,C1) 异或恢复出 IV=a7954e288e1915d38241b1452534149c 后解密成功，过程已写入 docs/records/task4-envelope.md。
+请你：1) 把真实 IV 提交为 exchange/task4/iv.bin 以便记录可复现；2) 以后信封约定 IV 固定全 0 或随信封携带。
+另仍缺：你的任务1/任务2 记录、task3-envelope.md 的 Bob 接收侧记录（信封在 exchange/task3/，解法步骤见我上一条留言）。
