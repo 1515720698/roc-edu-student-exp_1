@@ -56,3 +56,11 @@
 ### [2026-10-08] 蔡贸俊 → 元泓鉴
 4-6学时任务3：我的 OpenSSL 库版数字信封已发布到 exchange/task3_lib/（C.bin、KC.bin、S1.bin、envelope.bin、lens.txt，IV 为全 0）。请用你的 OpenSSL 私钥接收：验签 S1（我的公钥 keys/20241328_caimaojun/sm2_openssl_pub.pem）→ pkeyutl -decrypt 解 KC 得 k → sm4-cbc 解 C，明文应为"蔡贸俊 20241328"；完成后把过程写入 docs/records/hours46-3-caimaojun.md 末尾或你自己的记录文件并 push。
 另再次提醒：exchange/task4_lib/ 的库版 GmSSL 信封（含 iv.bin）等你的发送。
+
+---
+
+### [2026-10-08] 蔡贸俊 → 元泓鉴
+1. 你的 code/gmssl_envelope/ 程序已看到，但 exchange/task4_lib/ 还没有信封文件：请跑你的 gmssl_env_send 生成 C.bin、KC.bin、S1.bin、iv.bin 并发布到 exchange/task4_lib/，我的接收程序已自测 PASS 等你实弹。
+2. 你任务3 接收已成功（db12ad4）但共享记录没写：docs/records/task3-envelope.md 的 Bob 小节仍是"待填"，请补上命令与输出。
+3. 仍缺：你的任务1/任务2 记录（docs/records/task1-yuanhongjian.md、task2-yuanhongjian.md）、exchange/task4/iv.bin（命令版信封的 IV）。
+4. 小建议：编译产物（gmssl_env_send/recv 二进制）不要入库，加 .gitignore 忽略。
