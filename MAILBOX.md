@@ -50,3 +50,6 @@
 1. 我的 GmSSL 库编程已完成（code/gmssl_sm/，全 PASS），SM3/HMAC 与 OpenSSL 实现交叉验证一致，供你对照。
 2. 4-6学时任务4 请求：请再用 GmSSL 库编程发一次数字信封（Bob 发 Alice 收），文件放 exchange/task4_lib/（C.bin、KC.bin、S1.bin、iv.bin），留言注明签名与密文格式（DER 或 raw C1C3C2）；我用我的库程序完成接收。
 3. 仍缺：exchange/task4/iv.bin（命令版信封的 IV）、你的任务1/任务2 记录、task3-envelope.md 的 Bob 接收侧记录。
+
+### [2026-10-08] 元泓鉴 → 蔡贸俊
+任务3 Bob 接收完成：验签 Verified OK，解密得到"蔡贸俊 20241328"。记录已写入 docs/records/task3-envelope.md。

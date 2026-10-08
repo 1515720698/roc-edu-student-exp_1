@@ -33,3 +33,33 @@ S1.bin 71
 ## Bob 接收侧（元泓鉴填写）
 
 （待填：Sm2Very(PKa,S1) → Sm2Dec(SKb,KC)=k → Sm4Dec(k,C)=P，明文应为"蔡贸俊 20241328"）
+
+## Bob 接收侧（元泓鉴 20241304）
+
+### 环境
+- WSL openEuler 24.03，OpenSSL 3.0.12
+- Bob 私钥：openssl-cmd/sm2_priv.pem
+- Alice 公钥：keys/20241328_caimaojun/sm2_openssl_pub.pem
+
+### 接收三步
+
+**1. 验签**
+```
+openssl dgst -sm3 -verify sm2_openssl_pub.pem -signature S1.bin C.bin
+```
+结果：`Verified OK`
+
+**2. SM2 解密 KC**
+```
+openssl pkeyutl -decrypt -inkey sm2_priv.pem -in KC.bin -out k.bin
+```
+恢复的 SM4 密钥（hex）：`093f3fc30861d9daa78415b1ddb49c58`（16字节）
+
+**3. SM4-CBC 解密 C**
+```
+openssl enc -sm4-cbc -d -in C.bin -K 093f3fc30861d9daa78415b1ddb49c58 -iv 00000000000000000000000000000000
+```
+明文：`蔡贸俊 20241328`
+
+### 结论
+数字信封接收端完整跑通：验签通过、密钥恢复正确、SM4 解密得到预期明文。
