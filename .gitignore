@@ -19,3 +19,5 @@ envelope_gmssl
 *.swp
 *.tmp
 .vscode/
+alice_send
+bob_recv
