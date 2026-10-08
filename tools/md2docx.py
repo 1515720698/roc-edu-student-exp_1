@@ -61,6 +61,15 @@ def main():
         if line.startswith('!['):
             path = line[line.find('](') + 2:line.rfind(')')]
             add_image(os.path.join(base, path))
+        elif line.strip() == '[[PAGEBREAK]]':
+            DOC.add_page_break()
+        elif line.startswith('%%'):
+            p = DOC.add_paragraph()
+            p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            r = p.add_run(line[2:])
+            r.font.size = Pt(14)
+            r.font.name = 'Times New Roman'
+            r.element.rPr.rFonts.set(qn('w:eastAsia'), '宋体')
         elif line.startswith('#### '):
             DOC.add_heading(line[5:], level=4)
         elif line.startswith('### '):
