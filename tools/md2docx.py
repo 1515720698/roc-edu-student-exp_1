@@ -63,6 +63,14 @@ def main():
             add_image(os.path.join(base, path))
         elif line.strip() == '[[PAGEBREAK]]':
             DOC.add_page_break()
+        elif line.startswith('%%#'):
+            p = DOC.add_paragraph()
+            p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            r = p.add_run(line[3:])
+            r.font.size = Pt(18)
+            r.bold = True
+            r.font.name = 'Times New Roman'
+            r.element.rPr.rFonts.set(qn('w:eastAsia'), '黑体')
         elif line.startswith('%%'):
             p = DOC.add_paragraph()
             p.alignment = WD_ALIGN_PARAGRAPH.CENTER
