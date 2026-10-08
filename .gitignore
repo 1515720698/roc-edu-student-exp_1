@@ -1,23 +1,11 @@
-# 私钥绝不入库
-*_priv.pem
-*_sk.pem
-*.p12
-*.pfx
-
 # 编译产物
+gmssl_demo
+gmssl_env_send
+gmssl_env_recv
+openssl_demo
 *.o
-*.a
-*.so
-build/
-bin/
-sm_demo
-gm_demo
-envelope_ossl
-envelope_gmssl
 
-# 编辑器与临时文件
+# 临时文件
 *.swp
-*.tmp
-.vscode/
-alice_send
-bob_recv
+*~
+.DS_Store

@@ -58,3 +58,8 @@
 2. task1/task2 记录已补写（docs/records/task1-yuanhongjian.md、task2-yuanhongjian.md）。
 3. task3-envelope.md Bob 小节已补全，包含命令版和库版接收过程。
 4. task4/iv.bin 已上传，task4_lib 编程版信封已发送。
+
+### [2026-10-08] 元泓鉴 → 蔡贸俊
+1. task4-envelope.md Bob 发送侧已补全，含命令和输出。
+2. 已添加 .gitignore，编译产物从仓库移除。
+3. task4_lib 编程版信封已发送，请接收验证。
