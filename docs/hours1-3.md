@@ -3,6 +3,28 @@
 成员：20241328 蔡贸俊（Alice）、20241304 元泓鉴（Bob）
 环境：openEuler 24.03 LTS / OpenSSL 3.0.12 / GmSSL 3.3.0-dev
 
+# 环境准备（蔡贸俊）
+
+## 工具链与算法库版本
+
+```text
+$ gcc --version | head -1
+gcc (GCC) 12.3.1 (openEuler 12.3.1-38.oe2403)
+$ cmake --version | head -1
+cmake version 3.27.9
+$ openssl version
+OpenSSL 3.0.12 24 Oct 2023 (Library: OpenSSL 3.0.12 24 Oct 2023)
+$ gmssl version
+GmSSL 3.3.0-dev.1183
+$ cat /etc/ld.so.conf.d/gmssl.conf
+/usr/local/lib
+```
+
+## 准备过程
+1. WSL2 安装 openEuler 24.03 LTS（作业推荐系统）。
+2. `dnf install -y gcc-c++ cmake openssl-devel`（OpenSSL 开发头文件与编译工具）。
+3. 源码编译 GmSSL 3.3.0：`git clone https://github.com/guanzhi/GmSSL.git` → `cmake -B build && cmake --build build -j` → `cmake --install build`，构建全部目标成功（100% Built target ...）。
+4. 配置 `echo /usr/local/lib > /etc/ld.so.conf.d/gmssl.conf && ldconfig`，解决 libgmssl 链接与运行时的库路径问题（详见问题与反思第1条）。
 # 任务1 OpenSSL 命令实践（蔡贸俊）
 
 环境：openEuler 24.03 LTS (WSL2)、OpenSSL 3.0.12
@@ -376,3 +398,36 @@ $ gmssl sm4_cbc -decrypt -pkcs7_padding -key 7867646ecd25d0ff82b00cee25975aae -i
 ## Bob 发送侧（元泓鉴填写）
 
 （待填：k 生成、C=Sm4Enc(k,P)、KC=Sm2Enc(PKa,k)、S1=Sm2Sign(SKb,C) 的命令与输出，含所用 IV）
+
+### Bob 发送侧（元泓鉴 20241304）
+
+**密钥生成：**
+```
+$ gmssl rand -outlen 16 -hex
+KEY=7867646ECD25D0FF82B00CEE25975AAE
+IV=A7954E288E1915D38241B1452534149C
+```
+
+**SM4 加密明文：**
+```
+$ gmssl sm4_cbc -encrypt -key $KEY -iv $IV -pkcs7_padding -in plain.txt -out C.bin
+C.bin = 32 bytes
+```
+
+**SM2 加密密钥（Alice公钥）：**
+```
+$ printf '\x78\x67\x64\x6e\xcd\x25\xd0\xff\x82\xb0\x0c\xee\x25\x97\x5a\xae' > k.bin
+$ gmssl sm2encrypt -pubkey alice_pub.pem -in k.bin -out KC.bin
+KC.bin = 122 bytes
+```
+
+**SM2 签名密文（Bob私钥）：**
+```
+$ gmssl sm2sign -key bob_priv.pem -pass 12345678 -in C.bin -out S1.bin
+S1.bin = 72 bytes
+```
+
+**发送文件：**
+C.bin、KC.bin、S1.bin 发布至 exchange/task4/。
+
+**说明：** 首次发送时 IV 使用随机值且未随信封传递，后补交 exchange/task4/iv.bin（十六进制 A7954E288E1915D38241B1452534149C）。后续编程版信封统一使用全0 IV。

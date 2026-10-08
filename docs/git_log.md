@@ -3,6 +3,10 @@
 命令：git log --date=iso --pretty=format:%h_%ad_%an_%s
 
 ```text
+0ece6fb 2026-10-08 10:20:46 +0800 蔡贸俊 restore: 修正.gitignore误忽略源码，恢复code/全部源码与Makefile入库
+d8ec42f 2026-10-08 10:17:26 +0800 蔡贸俊 docs: 纳入Bob记录重新装配提交稿与PDF，hours46-4补真实交换结果，收尾留言
+05a64a7 2026-10-08 10:16:28 +0800 20241304-yuanhongjian Merge remote-tracking branch 'origin/master'
+08a606b 2026-10-08 10:16:16 +0800 20241304-yuanhongjian docs: 补全task4 Bob发送侧记录，添加.gitignore移除编译产物
 cf0e578 2026-10-08 10:14:12 +0800 蔡贸俊 docs: 装配hours1-3/hours4-6/git_log提交稿并生成中文PDF（嵌入uming字体），附md2pdf工具
 f9e5f9d 2026-10-08 10:12:11 +0800 20241304-yuanhongjian docs: 补全task1/task2记录和task3-envelope Bob接收侧，留言通知
 e123636 2026-10-08 10:09:40 +0800 20241304-yuanhongjian feat: 上传task4命令版IV和task4_lib编程版GmSSL信封
