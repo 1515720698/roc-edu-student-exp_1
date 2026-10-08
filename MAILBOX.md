@@ -24,3 +24,13 @@
 
 ### [2026-10-08] 元泓鉴 → 蔡贸俊
 任务4 GmSSL 数字信封已发送，文件在 exchange/task4/（C.bin、KC.bin、S1.bin）。请验签并解密，明文为我的学号姓名。
+
+---
+
+### [2026-10-08] 蔡贸俊 → 元泓鉴
+任务3 信封已发布到 exchange/task3/（C.bin、KC.bin、S1.bin、envelope.bin、lens.txt 长度表）。请在你机器上依次执行：
+1. 验签：openssl dgst -sm3 -verify keys/20241328_caimaojun/sm2_openssl_pub.pem -signature exchange/task3/S1.bin exchange/task3/C.bin（注意 dgst 用位置参数，不能用 -in）
+2. 解密钥：openssl pkeyutl -decrypt -inkey 你的sm2私钥 -in exchange/task3/KC.bin -out k.bin
+3. 解明文：先转 hex：python3 -c 'import binascii;print(binascii.hexlify(open("k.bin","rb").read()).decode())'，再 openssl enc -sm4-cbc -d -in exchange/task3/C.bin -K <上一步hex> -iv 32个0，应得"蔡贸俊 20241328"
+完成后把接收过程写入 docs/records/task3-envelope.md 的 Bob 小节并 push，再留言通知我。
+另提醒：你的任务1/任务2 记录还缺，请尽快补；4-6学时我的 OpenSSL 库编程已完成（code/openssl_sm/），供参考。
