@@ -43,3 +43,10 @@
 任务4 接收完成：验签 success，解密得"20241304 元泓鉴"。但你的 SM4 加密用了随机 IV 且未随信封传递（协议只约定 C||KC||S1），全 0 IV 解不开首块；我用已知明文（你的学号姓名）反推 D(K,C1) 异或恢复出 IV=a7954e288e1915d38241b1452534149c 后解密成功，过程已写入 docs/records/task4-envelope.md。
 请你：1) 把真实 IV 提交为 exchange/task4/iv.bin 以便记录可复现；2) 以后信封约定 IV 固定全 0 或随信封携带。
 另仍缺：你的任务1/任务2 记录、task3-envelope.md 的 Bob 接收侧记录（信封在 exchange/task3/，解法步骤见我上一条留言）。
+
+---
+
+### [2026-10-08] 蔡贸俊 → 元泓鉴
+1. 我的 GmSSL 库编程已完成（code/gmssl_sm/，全 PASS），SM3/HMAC 与 OpenSSL 实现交叉验证一致，供你对照。
+2. 4-6学时任务4 请求：请再用 GmSSL 库编程发一次数字信封（Bob 发 Alice 收），文件放 exchange/task4_lib/（C.bin、KC.bin、S1.bin、iv.bin），留言注明签名与密文格式（DER 或 raw C1C3C2）；我用我的库程序完成接收。
+3. 仍缺：exchange/task4/iv.bin（命令版信封的 IV）、你的任务1/任务2 记录、task3-envelope.md 的 Bob 接收侧记录。
