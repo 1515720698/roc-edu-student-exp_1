@@ -1,0 +1,17 @@
+# 私钥绝不入库
+*_priv.pem
+*_sk.pem
+*.p12
+*.pfx
+
+# 编译产物
+*.o
+*.a
+*.so
+build/
+bin/
+
+# 编辑器与临时文件
+*.swp
+*.tmp
+.vscode/
